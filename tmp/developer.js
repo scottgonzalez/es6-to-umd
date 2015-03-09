@@ -1,24 +1,20 @@
-"use strict";
-
 import Person from "./person";
 
-var Developer = (function (Person) {
+var Developer = (function (_Person) {
 	function Developer() {
 		babelHelpers.classCallCheck(this, Developer);
 
-		if (Person != null) {
-			Person.apply(this, arguments);
+		if (_Person != null) {
+			_Person.apply(this, arguments);
 		}
 	}
 
-	babelHelpers.inherits(Developer, Person);
-	babelHelpers.prototypeProperties(Developer, null, {
+	babelHelpers.inherits(Developer, _Person);
+	babelHelpers.createClass(Developer, {
 		greet: {
 			value: function greet() {
 				alert("Hi, I'm a " + this.options.language + " developer.");
-			},
-			writable: true,
-			configurable: true
+			}
 		}
 	});
 	return Developer;

@@ -17,7 +17,8 @@ fs.readdirSync( "src" ).forEach(function( file ) {
 
 		// Don't transpile modules, we'll let esperanto do that
 		blacklist: [
-			"es6.modules"
+			"es6.modules",
+			"useStrict"
 		],
 
 		// Babel normally sticks all the required helpers at the top of the module.
@@ -41,17 +42,7 @@ fs.readdirSync( "src" ).forEach(function( file ) {
 // Bundle all the transpiled modules using esperanto
 esperanto.bundle({
 	base: "tmp",
-	entry: "app.js",
-	transform: function( source, file ) {
-
-		// We use a transform on an empty file to dynamically generate the
-		// Babel helpers that our modules need.
-		if ( file.match( /babel-helpers.js$/ ) ) {
-			source = babel.buildExternalHelpers( Object.keys( helpers ) );
-		}
-
-		return source;
-	}
+	entry: "app.js"
 })
 	.then(function (bundle) {
 
@@ -61,6 +52,10 @@ esperanto.bundle({
 		var umd = bundle.toUmd({
 			name: "test"
 		});
+
+		// Insert the babel helpers
+		helpers = babel.buildExternalHelpers( Object.keys( helpers ), "var" );
+		umd.code = umd.code.replace( "/** babel-helpers **/", helpers );
 
 		// Save the generated bundle in the dist directory
 		fs.writeFileSync( "dist/test.js", umd.code );

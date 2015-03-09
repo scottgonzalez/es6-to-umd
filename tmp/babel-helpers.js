@@ -1,1 +1,1 @@
-"use strict";
+/** babel-helpers **/

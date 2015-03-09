@@ -1,5 +1,3 @@
-"use strict";
-
 import "./babel-helpers";
 import Person from "./person";
 import Developer from "./developer";
